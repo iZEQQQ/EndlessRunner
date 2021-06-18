@@ -54,6 +54,44 @@ Texture *guySprite(SDL_Renderer *renderer) {
     return texture;
 }
 
+
+Texture *obstacleOneSprite(SDL_Renderer *renderer) {
+    SDL_Rect gSpriteClips[1];
+
+    gSpriteClips[0].x = 0;
+    gSpriteClips[0].y = 0;
+    gSpriteClips[0].w = 31;
+    gSpriteClips[0].h = 65;
+
+
+    Texture *texture = new Texture(renderer, "assets/obstacle1.png", gSpriteClips, 1);
+    return texture;
+}
+Texture *obstacleTwoSprite(SDL_Renderer *renderer) {
+    SDL_Rect gSpriteClips[1];
+
+    gSpriteClips[0].x = 0;
+    gSpriteClips[0].y = 0;
+    gSpriteClips[0].w = 31;
+    gSpriteClips[0].h = 65;
+
+
+    Texture *texture = new Texture(renderer, "assets/obstacle2.png", gSpriteClips, 1);
+    return texture;
+}
+Texture *obstacleThreeSprite(SDL_Renderer *renderer) {
+    SDL_Rect gSpriteClips[1];
+
+    gSpriteClips[0].x = 0;
+    gSpriteClips[0].y = 0;
+    gSpriteClips[0].w = 31;
+    gSpriteClips[0].h = 65;
+
+
+    Texture *texture = new Texture(renderer, "assets/obstacle3.png", gSpriteClips, 1);
+    return texture;
+}
+
 void renderRunner() {
     //Walking animation
     const int WALKING_ANIMATION_FRAMES = 4;
@@ -79,6 +117,9 @@ int main(int, char **) {
 
 
     Texture *guy = guySprite(renderer);
+    Texture *obOne = obstacleOneSprite(renderer);
+    Texture *obTwo = obstacleTwoSprite(renderer);
+    Texture *obThree = obstacleThreeSprite(renderer);
 
     milliseconds dt(150);
 
@@ -93,6 +134,9 @@ int main(int, char **) {
         }
 
         guy->render(0, 0);
+        obOne->render(140, 150);
+        obTwo->render(250, 50);
+        obThree->render(400, 270);
 
         //Update the surface
         SDL_UpdateWindowSurface(window);
@@ -102,6 +146,9 @@ int main(int, char **) {
     }
 
     guy->~Texture();
+    obOne->~Texture();
+    obThree->~Texture();
+    obTwo->~Texture();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     IMG_Quit();
