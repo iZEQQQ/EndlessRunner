@@ -11,11 +11,11 @@ private:
 
     SDL_Renderer *gRenderer;
 
-    SDL_Rect *splitesArr;
+    SDL_Rect *spritesArr;
 
-    int splitesCount;
+    int spritesCount;
 
-    int currentSplite = 0;
+    int currentSprite = 0;
     //Image dimensions
     int mWidth;
 

@@ -12,7 +12,6 @@
 #include <vector>
 #include "Variables.hpp"
 #include "Texture.hpp"
-#include "Texture.cpp"
 #include "GameMethods.hpp"
 
 
@@ -27,7 +26,7 @@
   }
 //na kazda metode kolejna taka metoda
 Texture *guySprite(SDL_Renderer *renderer) {
-    SDL_Rect gSpriteClips[4];
+    SDL_Rect *gSpriteClips = new SDL_Rect[4];
 
     gSpriteClips[0].x = 0;
     gSpriteClips[0].y = 0;
@@ -56,7 +55,8 @@ Texture *guySprite(SDL_Renderer *renderer) {
 
 
 Texture *obstacleOneSprite(SDL_Renderer *renderer) {
-    SDL_Rect gSpriteClips[1];
+    SDL_Rect *gSpriteClips = new SDL_Rect[1];
+
 
     gSpriteClips[0].x = 0;
     gSpriteClips[0].y = 0;
@@ -68,7 +68,8 @@ Texture *obstacleOneSprite(SDL_Renderer *renderer) {
     return texture;
 }
 Texture *obstacleTwoSprite(SDL_Renderer *renderer) {
-    SDL_Rect gSpriteClips[1];
+    SDL_Rect *gSpriteClips = new SDL_Rect[1];
+
 
     gSpriteClips[0].x = 0;
     gSpriteClips[0].y = 0;
@@ -80,7 +81,7 @@ Texture *obstacleTwoSprite(SDL_Renderer *renderer) {
     return texture;
 }
 Texture *obstacleThreeSprite(SDL_Renderer *renderer) {
-    SDL_Rect gSpriteClips[1];
+    SDL_Rect *gSpriteClips = new SDL_Rect[1];
 
     gSpriteClips[0].x = 0;
     gSpriteClips[0].y = 0;
@@ -104,6 +105,7 @@ int main(int, char **) {
     using namespace std::chrono;
 
     errcheck(SDL_Init(SDL_INIT_VIDEO) != 0);
+    errcheck(IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG);
 
 
     SDL_Window *window = SDL_CreateWindow(
@@ -123,7 +125,6 @@ int main(int, char **) {
 
     milliseconds dt(150);
 
-
     steady_clock::time_point current_time = steady_clock::now(); // remember current time
     for (bool game_active = true; game_active;) {
         SDL_Event event;
@@ -132,11 +133,10 @@ int main(int, char **) {
                 game_active = false;
             }
         }
-
         guy->render(0, 0);
         obOne->render(140, 150);
         obTwo->render(250, 50);
-        obThree->render(400, 270);
+        obThree->render(70, 70);
 
         //Update the surface
         SDL_UpdateWindowSurface(window);
