@@ -154,25 +154,92 @@ int main(int, char **) {
     Texture *obOne = obstacleOneSprite(renderer);
     Texture *obTwo = obstacleTwoSprite(renderer);
     Texture *obThree = obstacleThreeSprite(renderer);
+    Texture *currentTexture = obOne;
 
 
     milliseconds dt(150);
 
     steady_clock::time_point current_time = steady_clock::now(); // remember current time
+
+    int baseGuyX = 550;
+    int baseGuyY = 189;
+    int currentGuyX = 550;
+    int currentGuyY = 189;
+
+    int obstacleX = 0;
+    int obstacleY = 330;
+    int currentObstacleX = 0;
+    int obstacleVelocity = 40;
+    int obstacleAcc = 1;
+    int frameCounter = 0;
+    int freeFrames = 30;
+
+    bool inMotion = false;
+    int guyVelocity = 0;
+    int jumpStartVelocity = -100;
+    int gravity = 75;
+
     for (bool game_active = true; game_active;) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) { // check if there are some events
             if (event.type == SDL_QUIT) {
                 game_active = false;
+            } else if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                    case SDLK_SPACE:
+                        std::cout << guyVelocity << std::endl;
+                        if (inMotion == false) {
+                            guyVelocity = jumpStartVelocity;
+                            inMotion = true;
+                        }
+                }
+            }
+        }
+        frameCounter++;
+        if (frameCounter % freeFrames == 0) {
+            obstacleVelocity = obstacleVelocity + obstacleAcc;
+            frameCounter = 0;
+        }
+        obstacleX = obstacleX + obstacleVelocity;
+        if (obstacleX >= SCREEN_WIDTH) {
+            int number = rand() % 3;
+            switch (number) {
+                case 0:
+                    currentTexture = obOne;
+                    break;
+                case 1:
+                    currentTexture = obTwo;
+                    break;
+                case 2:
+                    currentTexture = obThree;
+                    break;
+            }
+            obstacleX = 0;
+        }
+
+        if (inMotion) {
+            currentGuyY = currentGuyY + guyVelocity;
+            if (currentGuyY > baseGuyY) {
+                currentGuyY = baseGuyY;
+                guyVelocity = 0;
+                inMotion = false;
+            }
+            if (inMotion) {
+                guyVelocity = guyVelocity + gravity;
             }
         }
 
+        cout << obstacleX << std::endl;
+
+        //        Rendering all sprites
         background->render(0, 0);
         floor->render(0, 395);
-        guy->render(550, 189);
-        obOne->render(140, 330);
-        obTwo->render(250, 330);
-        obThree->render(70, 330);
+        guy->render(currentGuyX, currentGuyY);
+        currentTexture->render(obstacleX, 330);
+//        TODO added random generating
+//        obOne->render(obstacleX, 330);
+//        obTwo->render(250, 330);
+//        obThree->render(70, 330);
 
 
         //Update the surface
@@ -182,6 +249,7 @@ int main(int, char **) {
         this_thread::sleep_until(current_time = current_time + dt);
     }
 
+//    destroying all sprites and freeing memory
     guy->~Texture();
     obOne->~Texture();
     obThree->~Texture();
