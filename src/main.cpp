@@ -24,6 +24,7 @@
       return -1;                                                               \
     }                                                                          \
   }
+
 //na kazda metode kolejna taka metoda
 Texture *guySprite(SDL_Renderer *renderer) {
     SDL_Rect *gSpriteClips = new SDL_Rect[4];
@@ -67,6 +68,7 @@ Texture *obstacleOneSprite(SDL_Renderer *renderer) {
     Texture *texture = new Texture(renderer, "assets/obstacle1.png", gSpriteClips, 1);
     return texture;
 }
+
 Texture *obstacleTwoSprite(SDL_Renderer *renderer) {
     SDL_Rect *gSpriteClips = new SDL_Rect[1];
 
@@ -80,6 +82,7 @@ Texture *obstacleTwoSprite(SDL_Renderer *renderer) {
     Texture *texture = new Texture(renderer, "assets/obstacle2.png", gSpriteClips, 1);
     return texture;
 }
+
 Texture *obstacleThreeSprite(SDL_Renderer *renderer) {
     SDL_Rect *gSpriteClips = new SDL_Rect[1];
 
@@ -92,6 +95,33 @@ Texture *obstacleThreeSprite(SDL_Renderer *renderer) {
     Texture *texture = new Texture(renderer, "assets/obstacle3.png", gSpriteClips, 1);
     return texture;
 }
+
+Texture *backgroundSprite(SDL_Renderer *renderer) {
+    SDL_Rect *gSpriteClips = new SDL_Rect[1];
+
+    gSpriteClips[0].x = 0;
+    gSpriteClips[0].y = 0;
+    gSpriteClips[0].w = 692;
+    gSpriteClips[0].h = 559;
+
+
+    Texture *texture = new Texture(renderer, "assets/backgroundSprite.png", gSpriteClips, 1);
+    return texture;
+}
+
+Texture *floorSprite(SDL_Renderer *renderer) {
+    SDL_Rect *gSpriteClips = new SDL_Rect[1];
+
+    gSpriteClips[0].x = 0;
+    gSpriteClips[0].y = 0;
+    gSpriteClips[0].w = 692;
+    gSpriteClips[0].h = 288;
+
+
+    Texture *texture = new Texture(renderer, "assets/floorSprite.png", gSpriteClips, 1);
+    return texture;
+}
+
 
 void renderRunner() {
     //Walking animation
@@ -122,6 +152,8 @@ int main(int, char **) {
     Texture *obOne = obstacleOneSprite(renderer);
     Texture *obTwo = obstacleTwoSprite(renderer);
     Texture *obThree = obstacleThreeSprite(renderer);
+//    Texture *floor = floor(renderer);
+//    Texture *background = background(renderer);
 
     milliseconds dt(150);
 
@@ -133,10 +165,12 @@ int main(int, char **) {
                 game_active = false;
             }
         }
-        guy->render(0, 0);
+        guy->render(550, 189);
         obOne->render(140, 150);
         obTwo->render(250, 50);
         obThree->render(70, 70);
+//        floor->render(0, 338);
+//        background->render(460, 100);
 
         //Update the surface
         SDL_UpdateWindowSurface(window);
@@ -149,6 +183,8 @@ int main(int, char **) {
     obOne->~Texture();
     obThree->~Texture();
     obTwo->~Texture();
+//    floor->~Texture();
+//    background->~Texture();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     IMG_Quit();
