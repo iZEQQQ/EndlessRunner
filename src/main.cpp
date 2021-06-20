@@ -105,7 +105,7 @@ Texture *backgroundSprite(SDL_Renderer *renderer) {
     gSpriteClips[0].h = 559;
 
 
-    Texture *texture = new Texture(renderer, "assets/backgroundSprite.png", gSpriteClips, 1);
+    Texture *texture = new Texture(renderer, "assets/background.png", gSpriteClips, 1);
     return texture;
 }
 
@@ -118,7 +118,7 @@ Texture *floorSprite(SDL_Renderer *renderer) {
     gSpriteClips[0].h = 288;
 
 
-    Texture *texture = new Texture(renderer, "assets/floorSprite.png", gSpriteClips, 1);
+    Texture *texture = new Texture(renderer, "assets/floor.png", gSpriteClips, 1);
     return texture;
 }
 
@@ -148,12 +148,13 @@ int main(int, char **) {
     errcheck(renderer == nullptr);
 
 
+    Texture *floor = floorSprite(renderer);
+    Texture *background = backgroundSprite(renderer);
     Texture *guy = guySprite(renderer);
     Texture *obOne = obstacleOneSprite(renderer);
     Texture *obTwo = obstacleTwoSprite(renderer);
     Texture *obThree = obstacleThreeSprite(renderer);
-//    Texture *floor = floor(renderer);
-//    Texture *background = background(renderer);
+
 
     milliseconds dt(150);
 
@@ -165,12 +166,14 @@ int main(int, char **) {
                 game_active = false;
             }
         }
+
+        background->render(0, 0);
+        floor->render(0, 395);
         guy->render(550, 189);
-        obOne->render(140, 150);
-        obTwo->render(250, 50);
-        obThree->render(70, 70);
-//        floor->render(0, 338);
-//        background->render(460, 100);
+        obOne->render(140, 330);
+        obTwo->render(250, 330);
+        obThree->render(70, 330);
+
 
         //Update the surface
         SDL_UpdateWindowSurface(window);
@@ -183,8 +186,8 @@ int main(int, char **) {
     obOne->~Texture();
     obThree->~Texture();
     obTwo->~Texture();
-//    floor->~Texture();
-//    background->~Texture();
+    floor->~Texture();
+    background->~Texture();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     IMG_Quit();
