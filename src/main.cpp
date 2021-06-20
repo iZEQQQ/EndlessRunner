@@ -168,7 +168,6 @@ int main(int, char **) {
 
     int obstacleX = 0;
     int obstacleY = 330;
-    int currentObstacleX = 0;
     int obstacleVelocity = 40;
     int obstacleAcc = 1;
     int frameCounter = 0;
@@ -229,18 +228,12 @@ int main(int, char **) {
             }
         }
 
-        cout << obstacleX << std::endl;
 
         //        Rendering all sprites
         background->render(0, 0);
         floor->render(0, 395);
         guy->render(currentGuyX, currentGuyY);
         currentTexture->render(obstacleX, 330);
-//        TODO added random generating
-//        obOne->render(obstacleX, 330);
-//        obTwo->render(250, 330);
-//        obThree->render(70, 330);
-
 
         //Update the surface
         SDL_UpdateWindowSurface(window);
