@@ -22,7 +22,6 @@
   }
 
 
-
 int main(int, char **) {
     using namespace std;
     using namespace std::chrono;
