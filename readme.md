@@ -6,3 +6,6 @@ https://github.com/tcbrindle/sdl2-cmake-scripts
 
 code and graphic samples with ttf font:
 https://lazyfoo.net/tutorials/SDL/index.php
+
+Control:
+use space bar for jumping
