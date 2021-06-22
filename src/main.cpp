@@ -122,6 +122,46 @@ Texture *floorSprite(SDL_Renderer *renderer) {
     return texture;
 }
 
+bool collisionDetection(SDL_Rect obstacle, SDL_Rect guy) {
+    //The sides of the rectangles
+    int leftObstacle, leftGuy;
+    int rightObstacle, rightGuy;
+    int topObstacle, topGuy;
+    int bottomObstacle, bottomGuy;
+
+    //Calculate the sides of rect A
+    leftObstacle = obstacle.x;
+    rightObstacle = obstacle.x + obstacle.w;
+    topObstacle = obstacle.y;
+    bottomObstacle = obstacle.y + obstacle.h;
+
+    //Calculate the sides of rect B
+    leftGuy = guy.x;
+    rightGuy = guy.x + guy.w;
+    topGuy = guy.y;
+    bottomGuy = guy.y + guy.h;
+
+    //If any of the sides from A are outside of B
+    if (bottomObstacle <= topGuy) {
+        return false;
+    }
+
+    if (topObstacle >= bottomGuy) {
+        return false;
+    }
+
+    if (rightObstacle <= leftGuy) {
+        return false;
+    }
+
+    if (leftObstacle >= rightGuy) {
+        return false;
+    }
+
+    //If none of the sides from A are outside B
+    return true;
+}
+
 
 void renderRunner() {
     //Walking animation
@@ -175,8 +215,22 @@ int main(int, char **) {
 
     bool inMotion = false;
     int guyVelocity = 0;
-    int jumpStartVelocity = -100;
+    int jumpStartVelocity = -130;
     int gravity = 75;
+    int points = 0;
+
+    SDL_Rect obstacleSize;
+    obstacleSize.x = obstacleX;
+    obstacleSize.y = obstacleY;
+    obstacleSize.w = 31;
+    obstacleSize.h = 65;
+
+    SDL_Rect guySize;
+    guySize.x = currentGuyX;
+    guySize.y = currentGuyY;
+    guySize.w = 64;
+    guySize.h = 205;
+
 
     for (bool game_active = true; game_active;) {
         SDL_Event event;
@@ -186,7 +240,6 @@ int main(int, char **) {
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
                     case SDLK_SPACE:
-                        std::cout << guyVelocity << std::endl;
                         if (inMotion == false) {
                             guyVelocity = jumpStartVelocity;
                             inMotion = true;
@@ -199,8 +252,9 @@ int main(int, char **) {
             obstacleVelocity = obstacleVelocity + obstacleAcc;
             frameCounter = 0;
         }
+
         obstacleX = obstacleX + obstacleVelocity;
-        if (obstacleX >= SCREEN_WIDTH) {
+        if (obstacleX >= SCREEN_WIDTH || collisionDetection(obstacleSize, guySize)) {
             int number = rand() % 3;
             switch (number) {
                 case 0:
@@ -213,7 +267,12 @@ int main(int, char **) {
                     currentTexture = obThree;
                     break;
             }
+            points = points + 10;
+            std::cout << "Points: " << points << std::endl;
             obstacleX = 0;
+        } else {
+            std::cout << "You Lost" << " Your score: " << points << std::endl;
+            game_active = false;
         }
 
         if (inMotion) {
