@@ -16,10 +16,6 @@ private:
     int spritesCount;
 
     int currentSprite = 0;
-    //Image dimensions
-    int mWidth;
-
-    int mHeight;
 
 public:
     //Initializes variables konstruktor
@@ -30,11 +26,6 @@ public:
 
     //Renders texture at given point
     void render(int x, int y);
-
-    //Gets image dimensions
-    int getWidth();
-
-    int getHeight();
 
 };
 

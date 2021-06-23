@@ -144,10 +144,13 @@ bool collisionDetection(SDL_Rect obstacle, SDL_Rect guy) {
 
 void points(SDL_Renderer *renderer, int points) {
     TTF_Font *lazy = TTF_OpenFont("assets/lazy.ttf", 80);
+
     SDL_Color black = {0, 0, 0};
+
     SDL_Surface *surfaceMessage =
             TTF_RenderText_Solid(lazy, (" Your score: " + std::to_string(points)).c_str(), black);
     SDL_Texture *Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
     SDL_Rect Message_rect; //create a rect
     Message_rect.x = 0;  //controls the rect's x coordinate
     Message_rect.y = 0; // controls the rect's y coordinte

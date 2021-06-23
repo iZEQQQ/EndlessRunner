@@ -74,7 +74,7 @@ int main(int, char **) {
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
                     case SDLK_SPACE:
-                        if (inMotion == false) {
+                        if (!inMotion) {
                             guyVelocity = JUMP_START_VELOCITY;
                             inMotion = true;
                         }
